@@ -5,50 +5,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.MainMenu">
-    <LinearLayout
+    tools:context=".Views.HomePageActivities.HomePageFragments.PopularWalls">
+    <RelativeLayout
         android:id="@+id/idLL1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:background="@drawable/styling_border"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal"
-        android:weightSum="4">
-
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/search_box_bg">
         <EditText
             android:id="@+id/idEdtSearch"
-            android:layout_width="0dp"
+            android:hint="Type landscape , beach , mountain . . ."
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3.5"
-            android:hint="Search Wallpapers"
-            android:padding="8dp"
             android:singleLine="true"
             android:textSize="15sp"
-            app:backgroundTint="@android:color/transparent" />
-
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp"
+            app:backgroundTint="@android:color/transparent"/>
         <ImageView
             android:id="@+id/idIVSearch"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:padding="4dp"
-            android:src="@drawable/ic_search" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/idRVCategories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/idLL1"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/category_rv_item" />
-
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_search"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
     <ProgressBar
         android:id="@+id/idPBLoading"
         android:layout_width="wrap_content"
@@ -61,7 +44,6 @@
         android:id="@+id/idRVWallpapers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/idRVCategories"
+        android:layout_below="@id/idLL1"
         android:layout_marginTop="5dp" />
-
 </RelativeLayout>

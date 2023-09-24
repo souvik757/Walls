@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376200237547",
+    "project_id": "saikouwalls",
+    "storage_bucket": "saikouwalls.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376200237547:android:8a3f9926f70b708c6189ae",
+        "android_client_info": {
+          "package_name": "com.example.saikouwalls"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc1yyALWiCLvFdiYt3Cdyu_N9-Xluqgl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

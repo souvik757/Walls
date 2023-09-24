@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.saikouwalls.Views.MainMenu;
+import com.example.saikouwalls.Views.HomePageActivities.HomePage;
 
 public class MainActivity extends AppCompatActivity {
     // widgets
@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
         init() ;
         sync() ;
-
     }
     private void sync(){
         new Handler().postDelayed(()->{
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         loadingBar = findViewById(R.id.progressBar) ;
     }
     private void nav(){
-        Intent i = new Intent(MainActivity.this , MainMenu.class) ;
+        Intent i = new Intent(MainActivity.this , HomePage.class) ;
         startActivity(i);
     }
 }

@@ -12,15 +12,17 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.saikouwalls.Models.WallpaperRVModel;
 import com.example.saikouwalls.R;
+import com.example.saikouwalls.Services.ExtractClassName;
 import com.example.saikouwalls.Views.WallpaperActivity;
 
 import java.util.* ;
 public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.ViewHolder> {
-    private ArrayList<String> wallpaperList ;
+    private ArrayList<WallpaperRVModel> wallpaperList ;
     private Context context ;
 
-    public WallpaperRVAdapter(ArrayList<String> wallpaperList, Context context) {
+    public WallpaperRVAdapter(ArrayList<WallpaperRVModel> wallpaperList, Context context) {
         this.wallpaperList = wallpaperList;
         this.context = context;
     }
@@ -45,10 +47,13 @@ public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load(wallpaperList.get(position)).into(holder.wallpaperIV) ;
+        Glide.with(context).load(wallpaperList.get(position).getURL()).into(holder.wallpaperIV) ;
         holder.itemView.setOnClickListener(view -> {
+            WallpaperRVModel model = wallpaperList.get(position) ;
             Intent intent = new Intent(context , WallpaperActivity.class) ;
-            intent.putExtra("imgURL" , wallpaperList.get(position)) ;
+            intent.putExtra("imgURL" , model.getURL()) ;
+            intent.putExtra("userID" , model.getID()) ;
+            intent.putExtra("className" , ExtractClassName.getName(context.getClass().getName())) ;
             context.startActivity(intent) ;
         });
     }

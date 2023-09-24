@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/idPopular"
+        android:icon="@drawable/popular"
+        android:title=""
+        />
+    <item
+        android:id="@+id/idCategory"
+        android:icon="@drawable/category"
+        android:title=""
+        />
+    <item
+        android:id="@+id/idSaved"
+        android:icon="@drawable/bookmark"
+        android:title=""
+        />
+</menu>
