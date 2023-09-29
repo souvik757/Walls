@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/SyncPopularWalls"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,42 +8,45 @@
     android:layout_height="match_parent"
     tools:context=".Views.HomePageActivities.HomePageFragments.PopularWalls">
     <RelativeLayout
-        android:id="@+id/idLL1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_alignParentTop="true">
-        <EditText
-            android:id="@+id/idEdtSearch"
-            android:hint="Type landscape , beach , mountain . . ."
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/idLL1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_alignParentTop="true">
+            <EditText
+                android:id="@+id/idEdtSearch"
+                android:hint="Type landscape , beach , mountain . . ."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                app:backgroundTint="@android:color/transparent"/>
+            <ImageView
+                android:id="@+id/idIVSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_search"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/idPBLoading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            app:backgroundTint="@android:color/transparent"/>
-        <ImageView
-            android:id="@+id/idIVSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_search"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/idRVWallpapers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/idLL1"
+            android:layout_marginTop="5dp" />
     </RelativeLayout>
-    <ProgressBar
-        android:id="@+id/idPBLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/idRVWallpapers"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/idLL1"
-        android:layout_marginTop="5dp" />
-</RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -1,6 +1,7 @@
 package com.example.saikouwalls.Views;
 
 import android.app.WallpaperManager;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.example.saikouwalls.R;
 import com.example.saikouwalls.Services.DatabaseKeys;
 import com.example.saikouwalls.Services.ExtractClassName;
 import com.example.saikouwalls.Services.ExtractPhotoURLNumber;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,8 +38,10 @@ import java.util.UUID;
 public class WallpaperActivity extends AppCompatActivity {
     private WallpaperManager wallpaperManager ;
     private ImageView image ;
+    private ImageView btnInfo ;
     private Button setWallpaper , saveWallpaper ;
     private String url ;
+    private String imgName , imgWidth , imgHeight , imgPhotographer ;
     private ProgressBar loadingPB ;
 
     @Override
@@ -49,7 +54,14 @@ public class WallpaperActivity extends AppCompatActivity {
         sync() ;
     }
     private void init(){
+        imgName   = getIntent().getStringExtra("imgALT") ;
+        imgWidth  = getIntent().getStringExtra("imgWIDTH") ;
+        imgHeight = getIntent().getStringExtra("imgHEIGHT") ;
+        imgPhotographer = getIntent().getStringExtra("imgPHOTOGRAPHER") ;
+
+
         image = findViewById(R.id.image) ;
+        btnInfo = findViewById(R.id.idBtnShowImgInfo) ;
         setWallpaper = findViewById(R.id.idBtnSetWallpaper) ;
         saveWallpaper = findViewById(R.id.idBtnDownloadWallpaper) ;
         loadingPB = findViewById(R.id.idPBLoading) ;
@@ -110,12 +122,42 @@ public class WallpaperActivity extends AppCompatActivity {
                 saveToDatabase(savedID) ;
             }
         });
+
+        btnInfo.setOnClickListener(view -> {
+            showBottomSheetDialog() ;
+        });
     }
     private void saveToDatabase(String UID){
         String imgID = ExtractPhotoURLNumber.getNumber(url) ;
         DatabaseReference mRealtime = FirebaseDatabase.getInstance().getReference();
         mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgURL).setValue(url);
         showCustomToast("Wallpaper has been added");
+    }
+
+    private void showBottomSheetDialog(){
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this) ;
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialoge_img_info) ;
+        RelativeLayout rl1 = bottomSheetDialog.findViewById(R.id.RL1) ;
+        RelativeLayout rl2 = bottomSheetDialog.findViewById(R.id.RL2) ;
+        RelativeLayout rl3 = bottomSheetDialog.findViewById(R.id.RL3) ;
+        RelativeLayout rl4 = bottomSheetDialog.findViewById(R.id.RL4) ;
+
+        TextView name = bottomSheetDialog.findViewById(R.id.idTVName) ;
+        TextView dim  = bottomSheetDialog.findViewById(R.id.idTVDim) ;
+        TextView photographerName = bottomSheetDialog.findViewById(R.id.idTVPhotograp) ;
+
+        String dimensions = imgHeight +" X "+imgWidth ;
+        // setting resources
+        name.setText(imgName);
+        dim.setText(dimensions);
+        photographerName.setText(imgPhotographer) ;
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+
+            }
+        });
+        bottomSheetDialog.show() ;
     }
 
     private void showCustomToast(String message){

@@ -3,6 +3,7 @@ package com.example.saikouwalls.Views.HomePageActivities.HomePageFragments.Categ
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,8 +33,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WallsByCategory extends AppCompatActivity {
+public class WallsByCategory extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     // widgets
+    private SwipeRefreshLayout swipeRefreshLayout ;
     private ArrayList<WallpaperRVModel> wallpaperArrayList ;
     private RecyclerView categorizedWallpaperRV ;
     private WallpaperRVAdapter adapter ;
@@ -47,6 +49,8 @@ public class WallsByCategory extends AppCompatActivity {
 
         init();
         sync();
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.SyncWallsByCat) ;
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
     private void init(){
         ID = getIntent().getStringExtra("userID") ;
@@ -64,7 +68,6 @@ public class WallsByCategory extends AppCompatActivity {
 
         getWallpapers() ;
     }
-
     private void getWallpapers() {
         loadBar.setVisibility(View.VISIBLE);
         String url = "https://api.pexels.com/v1/search?query=" + category + "&per_page=200&page=1";
@@ -78,8 +81,11 @@ public class WallsByCategory extends AppCompatActivity {
                     for (int i = 0; i < photos.length(); i++) {
                         JSONObject photoObj = photos.getJSONObject(i);
                         String imgUrl = photoObj.getJSONObject("src").getString("portrait");
-
-                        wallpaperArrayList.add(new WallpaperRVModel(ID, imgUrl)) ;
+                        String imgDes = photoObj.getString("alt") ;
+                        String width = photoObj.getString("width") ;
+                        String height = photoObj.getString("height") ;
+                        String photographer = photoObj.getString("photographer") ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height)) ;
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -102,7 +108,6 @@ public class WallsByCategory extends AppCompatActivity {
         };
         queue.add(jsonObjectRequest);
     }
-
     private void showCustomToast(String message){
         LayoutInflater inflater = getLayoutInflater() ;
         View layout = inflater.inflate(R.layout.custom_toast_layout , (ViewGroup) findViewById(R.id.containerToast)) ;
@@ -114,5 +119,11 @@ public class WallsByCategory extends AppCompatActivity {
         toast.setDuration(Toast.LENGTH_SHORT) ;
         toast.setView(layout);
         toast.show() ;
+    }
+    @Override
+    public void onRefresh() {
+        init();
+        sync();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

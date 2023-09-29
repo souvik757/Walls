@@ -3,13 +3,21 @@ package com.example.saikouwalls.Models;
 public class WallpaperRVModel {
     private String ID ;
     private String URL ;
+    private String ALT ;
+    private String PHOTOGRAPHER_NAME ;
+    private String WIDTH ;
+    private String HEIGHT ;
 
     public WallpaperRVModel() {
     }
 
-    public WallpaperRVModel(String ID, String URL) {
+    public WallpaperRVModel(String ID, String URL, String ALT, String PHOTOGRAPHER_NAME, String WIDTH, String HEIGHT) {
         this.ID = ID;
         this.URL = URL;
+        this.ALT = ALT;
+        this.PHOTOGRAPHER_NAME = PHOTOGRAPHER_NAME;
+        this.WIDTH = WIDTH;
+        this.HEIGHT = HEIGHT;
     }
 
     public String getID() {
@@ -26,5 +34,37 @@ public class WallpaperRVModel {
 
     public void setURL(String URL) {
         this.URL = URL;
+    }
+
+    public String getALT() {
+        return ALT;
+    }
+
+    public void setALT(String ALT) {
+        this.ALT = ALT;
+    }
+
+    public String getPHOTOGRAPHER_NAME() {
+        return PHOTOGRAPHER_NAME;
+    }
+
+    public void setPHOTOGRAPHER_NAME(String PHOTOGRAPHER_NAME) {
+        this.PHOTOGRAPHER_NAME = PHOTOGRAPHER_NAME;
+    }
+
+    public String getWIDTH() {
+        return WIDTH;
+    }
+
+    public void setWIDTH(String WIDTH) {
+        this.WIDTH = WIDTH;
+    }
+
+    public String getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public void setHEIGHT(String HEIGHT) {
+        this.HEIGHT = HEIGHT;
     }
 }

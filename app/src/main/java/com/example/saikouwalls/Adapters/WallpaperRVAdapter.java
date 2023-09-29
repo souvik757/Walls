@@ -51,8 +51,12 @@ public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.
         holder.itemView.setOnClickListener(view -> {
             WallpaperRVModel model = wallpaperList.get(position) ;
             Intent intent = new Intent(context , WallpaperActivity.class) ;
-            intent.putExtra("imgURL" , model.getURL()) ;
             intent.putExtra("userID" , model.getID()) ;
+            intent.putExtra("imgURL" , model.getURL()) ;
+            intent.putExtra("imgWIDTH" , model.getWIDTH()) ;
+            intent.putExtra("imgHEIGHT" , model.getHEIGHT()) ;
+            intent.putExtra("imgALT" , model.getALT()) ;
+            intent.putExtra("imgPHOTOGRAPHER" , model.getPHOTOGRAPHER_NAME()) ;
 
             context.startActivity(intent) ;
         });

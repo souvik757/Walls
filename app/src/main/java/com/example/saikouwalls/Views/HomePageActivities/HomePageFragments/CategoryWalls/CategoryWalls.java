@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  * Use the {@link CategoryWalls#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryWalls extends Fragment {
+public class CategoryWalls extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +66,7 @@ public class CategoryWalls extends Fragment {
     }
     // widgets & variables
     private View parentViewHolder ;
+    private SwipeRefreshLayout swipeRefreshLayout ;
     private String ID ;
     private RecyclerView categoryRV ;
     private CategoryRVAdapter adapter ;
@@ -75,15 +77,15 @@ public class CategoryWalls extends Fragment {
         parentViewHolder = inflater.inflate(R.layout.fragment_category_walls, container, false);
         init() ;
         sync() ;
+        swipeRefreshLayout = (SwipeRefreshLayout) parentViewHolder.findViewById(R.id.SyncCatWalls) ;
+        swipeRefreshLayout.setOnRefreshListener(this) ;
         return parentViewHolder ;
     }
-
     private void init() {
         ID = ((HomePage)getActivity()).UniqueID ;
         categoryRV = parentViewHolder.findViewById(R.id.wallpaperCategories) ;
         categoryRVLargeModels = new ArrayList<>() ;
     }
-
     private void sync() {
         LinearLayoutManager manager = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false) ;
         adapter = new CategoryRVAdapter(categoryRVLargeModels , getContext()) ;
@@ -92,7 +94,6 @@ public class CategoryWalls extends Fragment {
 
         getCategories() ;
     }
-
     private void getCategories() {
         categoryRVLargeModels.add(new CategoryRVModel(ID ,"4K", "https://images.unsplash.com/photo-1650802203688-eac9694fe798?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1931&q=80"));
         categoryRVLargeModels.add(new CategoryRVModel(ID ,"Landscape", "https://images.unsplash.com/34/BA1yLjNnQCI1yisIZGEi_2013-07-16_1922_IMG_9873.jpg?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"));
@@ -106,5 +107,12 @@ public class CategoryWalls extends Fragment {
         categoryRVLargeModels.add(new CategoryRVModel(ID ,"Games", "https://images.unsplash.com/photo-1577741314755-048d8525d31e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"));
         categoryRVLargeModels.add(new CategoryRVModel(ID ,"Programming", "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZ3JhbW1pbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"));
         categoryRVLargeModels.add(new CategoryRVModel(ID ,"Technology", "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHRlY2hub2xvZ3l8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"));
+    }
+
+    @Override
+    public void onRefresh() {
+        init();
+        sync();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

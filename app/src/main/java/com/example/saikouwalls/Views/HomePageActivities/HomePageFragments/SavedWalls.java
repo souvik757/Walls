@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
  * Use the {@link SavedWalls#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SavedWalls extends Fragment {
+public class SavedWalls extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,6 +77,7 @@ public class SavedWalls extends Fragment {
     }
     // widgets & variables
     private View parentViewHolder ;
+    private SwipeRefreshLayout swipeRefreshLayout ;
     private String ID ;
     private TextView txt ;
     private RecyclerView savedWallpaperRV ;
@@ -83,14 +85,14 @@ public class SavedWalls extends Fragment {
     private SavedWallpaperRVAdapter wallpaperRVAdapter ;
     private ArrayList<SavedWallpaperRVModel> wallpaperArrayList ;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         parentViewHolder = inflater.inflate(R.layout.fragment_saved_walls, container, false);
         init();
         sync();
+        swipeRefreshLayout = (SwipeRefreshLayout) parentViewHolder.findViewById(R.id.SyncSavedWalls) ;
+        swipeRefreshLayout.setOnRefreshListener(this) ;
         return parentViewHolder ;
     }
-
     private void init(){
         ID = ((HomePage)getActivity()).UniqueID ;
         txt = parentViewHolder.findViewById(R.id.NoSavedTxt) ;
@@ -130,5 +132,12 @@ public class SavedWalls extends Fragment {
                 throw error.toException() ;
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        init();
+        sync();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

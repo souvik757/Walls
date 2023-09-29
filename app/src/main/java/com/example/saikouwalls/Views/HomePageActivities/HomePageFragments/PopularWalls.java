@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -40,7 +41,7 @@ import java.util.Map;
  * Use the {@link PopularWalls#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PopularWalls extends Fragment {
+public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,6 +86,7 @@ public class PopularWalls extends Fragment {
 
     // widgets & variables
     private View parentViewHolder ;
+    private SwipeRefreshLayout swipeRefreshLayout ;
     private RecyclerView wallpaperRV ;
     private EditText searchEdt ;
     private ImageView searchIV ;
@@ -99,6 +101,8 @@ public class PopularWalls extends Fragment {
         parentViewHolder = inflater.inflate(R.layout.fragment_popular_walls, container, false);
         init();
         sync();
+        swipeRefreshLayout = (SwipeRefreshLayout) parentViewHolder.findViewById(R.id.SyncPopularWalls) ;
+        swipeRefreshLayout.setOnRefreshListener(this) ;
         return parentViewHolder ;
     }
     private void init(){
@@ -152,8 +156,12 @@ public class PopularWalls extends Fragment {
                     for (int i = 0; i < photos.length(); i++) {
                         JSONObject photoObj = photos.getJSONObject(i);
                         String imgUrl = photoObj.getJSONObject("src").getString("portrait");
+                        String imgDes = photoObj.getString("alt") ;
+                        String width = photoObj.getString("width") ;
+                        String height = photoObj.getString("height") ;
+                        String photographer = photoObj.getString("photographer") ;
                         String ID = ((HomePage)getActivity()).UniqueID ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl)) ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height)) ;
                     }
                     wallpaperRVAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -190,8 +198,12 @@ public class PopularWalls extends Fragment {
                     for (int i = 0; i < photos.length(); i++) {
                         JSONObject photoObj = photos.getJSONObject(i);
                         String imgUrl = photoObj.getJSONObject("src").getString("portrait");
+                        String imgDes = photoObj.getString("alt") ;
+                        String width = photoObj.getString("width") ;
+                        String height = photoObj.getString("height") ;
+                        String photographer = photoObj.getString("photographer") ;
                         String ID = ((HomePage)getActivity()).UniqueID ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl)) ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height)) ;
                     }
                     wallpaperRVAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -225,5 +237,12 @@ public class PopularWalls extends Fragment {
         toast.setDuration(Toast.LENGTH_SHORT) ;
         toast.setView(layout);
         toast.show() ;
+    }
+
+    @Override
+    public void onRefresh() {
+        init();
+        sync();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
