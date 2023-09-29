@@ -11,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.saikouwalls.Adapters.SavedWallpaperRVAdapter;
 import com.example.saikouwalls.Adapters.WallpaperRVAdapter;
+import com.example.saikouwalls.Models.SavedWallpaperRVModel;
 import com.example.saikouwalls.Models.WallpaperRVModel;
 import com.example.saikouwalls.R;
 import com.example.saikouwalls.Services.DatabaseKeys;
@@ -74,10 +77,11 @@ public class SavedWalls extends Fragment {
     // widgets & variables
     private View parentViewHolder ;
     private String ID ;
+    private TextView txt ;
     private RecyclerView savedWallpaperRV ;
     private ProgressBar loadingBar ;
-    private WallpaperRVAdapter wallpaperRVAdapter ;
-    private ArrayList<WallpaperRVModel> wallpaperArrayList ;
+    private SavedWallpaperRVAdapter wallpaperRVAdapter ;
+    private ArrayList<SavedWallpaperRVModel> wallpaperArrayList ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,13 +93,14 @@ public class SavedWalls extends Fragment {
 
     private void init(){
         ID = ((HomePage)getActivity()).UniqueID ;
+        txt = parentViewHolder.findViewById(R.id.NoSavedTxt) ;
         savedWallpaperRV = parentViewHolder.findViewById(R.id.idRVSavedWallpaper) ;
         loadingBar = parentViewHolder.findViewById(R.id.idRVSavedProgressBar) ;
         wallpaperArrayList = new ArrayList<>() ;
     }
     private void sync(){
         GridLayoutManager layoutManager = new GridLayoutManager(getContext() , 2) ;
-        wallpaperRVAdapter = new WallpaperRVAdapter(wallpaperArrayList , getContext()) ;
+        wallpaperRVAdapter = new SavedWallpaperRVAdapter(wallpaperArrayList , getContext()) ;
 
         savedWallpaperRV.setLayoutManager(layoutManager);
         savedWallpaperRV.setAdapter(wallpaperRVAdapter);
@@ -106,12 +111,18 @@ public class SavedWalls extends Fragment {
         mRealtime.child(DatabaseKeys.users).child(ID).child(DatabaseKeys.savedImg).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot imgId : snapshot.getChildren()){
-                    String imgUrl = imgId.child(DatabaseKeys.imgURL).getValue(String.class) ;
-                    wallpaperArrayList.add(new WallpaperRVModel(ID , imgUrl)) ;
-                    loadingBar.setVisibility(View.GONE);
+                if(snapshot.exists()) {
+                    for (DataSnapshot imgId : snapshot.getChildren()) {
+                        String imgUrl = imgId.child(DatabaseKeys.imgURL).getValue(String.class);
+                        wallpaperArrayList.add(new SavedWallpaperRVModel(ID, imgUrl));
+                        loadingBar.setVisibility(View.GONE);
+                    }
+                    wallpaperRVAdapter.notifyDataSetChanged();
                 }
-                wallpaperRVAdapter.notifyDataSetChanged() ;
+                else {
+                    loadingBar.setVisibility(View.GONE) ;
+                    txt.setVisibility(View.VISIBLE) ;
+                }
             }
 
             @Override

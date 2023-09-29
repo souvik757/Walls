@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/search_box_bg">
+        android:layout_alignParentTop="true">
         <EditText
             android:id="@+id/idEdtSearch"
             android:hint="Type landscape , beach , mountain . . ."

@@ -18,6 +18,9 @@
         android:theme="@style/Theme.SaikouWalls"
         tools:targetApi="31">
         <activity
+            android:name=".Views.SavedWallpaperActivity"
+            android:exported="false" />
+        <activity
             android:name=".Views.HomePageActivities.HomePageFragments.CategoryWalls.WallsByCategory"
             android:exported="false" />
         <activity

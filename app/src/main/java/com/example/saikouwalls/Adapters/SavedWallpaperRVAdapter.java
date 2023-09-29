@@ -12,30 +12,30 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.saikouwalls.Models.WallpaperRVModel;
+import com.example.saikouwalls.Models.SavedWallpaperRVModel;
 import com.example.saikouwalls.R;
-import com.example.saikouwalls.Services.ExtractClassName;
-import com.example.saikouwalls.Views.WallpaperActivity;
+import com.example.saikouwalls.Views.SavedWallpaperActivity;
 
-import java.util.* ;
-public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.ViewHolder> {
-    private ArrayList<WallpaperRVModel> wallpaperList ;
+import java.util.ArrayList;
+
+public class SavedWallpaperRVAdapter extends RecyclerView.Adapter<SavedWallpaperRVAdapter.ViewHolder>{
+    private ArrayList<SavedWallpaperRVModel> wallpaperRVList ;
     private Context context ;
 
-    public WallpaperRVAdapter(ArrayList<WallpaperRVModel> wallpaperList, Context context) {
-        this.wallpaperList = wallpaperList;
-        this.context = context;
-    }
+    class ViewHolder extends RecyclerView.ViewHolder{
 
-    class ViewHolder extends RecyclerView.ViewHolder {
         private CardView imageCV ;
         private ImageView wallpaperIV ;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageCV = itemView.findViewById(R.id.idCVWallpaper) ;
             wallpaperIV = itemView.findViewById(R.id.idIVWallpaper) ;
         }
+
+    }
+    public SavedWallpaperRVAdapter(ArrayList<SavedWallpaperRVModel> wallpaperRVList, Context context) {
+        this.wallpaperRVList = wallpaperRVList;
+        this.context = context;
     }
 
     @NonNull
@@ -47,19 +47,18 @@ public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load(wallpaperList.get(position).getURL()).into(holder.wallpaperIV) ;
+        Glide.with(context).load(wallpaperRVList.get(position).getURL()).into(holder.wallpaperIV) ;
         holder.itemView.setOnClickListener(view -> {
-            WallpaperRVModel model = wallpaperList.get(position) ;
-            Intent intent = new Intent(context , WallpaperActivity.class) ;
-            intent.putExtra("imgURL" , model.getURL()) ;
-            intent.putExtra("userID" , model.getID()) ;
-
-            context.startActivity(intent) ;
+            SavedWallpaperRVModel model = wallpaperRVList.get(position) ;
+            Intent i = new Intent(context , SavedWallpaperActivity.class) ;
+            i.putExtra("imgURL" , model.getURL()) ;
+            i.putExtra("userID" , model.getID()) ;
+            context.startActivity(i) ;
         });
     }
 
     @Override
     public int getItemCount() {
-        return wallpaperList.size() ;
+        return wallpaperRVList.size() ;
     }
 }
