@@ -74,10 +74,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/idTVPhotograp"
+            android:id="@+id/idTVPhotograph"
             android:textColor="@color/white"
             android:layout_below="@+id/TV3"
             android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/RL5"
+        android:layout_below="@+id/RL4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/baseline_download_24"
+            android:backgroundTint="@color/blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>

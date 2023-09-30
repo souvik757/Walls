@@ -194,7 +194,9 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onResponse(JSONObject response) {
                 loadingPB.setVisibility(View.GONE);
                 try {
+
                     JSONArray photos = response.getJSONArray("photos");
+
                     for (int i = 0; i < photos.length(); i++) {
                         JSONObject photoObj = photos.getJSONObject(i);
                         String imgUrl = photoObj.getJSONObject("src").getString("portrait");

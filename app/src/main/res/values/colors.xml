@@ -6,6 +6,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="trans">#00FFFFFF</color>
     <color name="dark">#B7090639</color>
+    <color name="blue">#2979FF</color>
     <color name="red">#B7FF0000</color>
     <color name="green">#DCE775</color>
     <color name="lightViolate">#9575CD</color>
