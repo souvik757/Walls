@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:22.1.2'
     // firebase storage
     implementation "com.google.firebase:firebase-storage"
+    // ad mob
+    implementation 'com.google.android.gms:play-services-ads:22.4.0'
     // swipe refresh layout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 }

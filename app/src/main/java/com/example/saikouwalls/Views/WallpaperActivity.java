@@ -1,5 +1,7 @@
 package com.example.saikouwalls.Views;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.WallpaperManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -11,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,6 +36,17 @@ import com.bumptech.glide.request.target.Target;
 import com.example.saikouwalls.R;
 import com.example.saikouwalls.Services.DatabaseKeys;
 import com.example.saikouwalls.Services.ExtractPhotoURLNumber;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +64,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Executors;
 
+
 public class WallpaperActivity extends AppCompatActivity {
     private WallpaperManager wallpaperManager ;
     private ImageView image ;
@@ -57,15 +73,23 @@ public class WallpaperActivity extends AppCompatActivity {
     private String url ;
     private String imgName , imgWidth , imgHeight , imgPhotographer ;
     private ProgressBar loadingPB ;
+    // ad mob interstitial
+    private AdView mAdView ;
+    private InterstitialAd mInterstitialAd ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper);
+        // admob
+        MobileAds.initialize(WallpaperActivity.this) ;
+        initializeAdMob();
+        loadInterstitialAd();
         // getting url from parent activity
         url = getIntent().getStringExtra("imgURL") ;
         init() ;
         sync() ;
+        loadBannerAd();
     }
     private void init(){
         imgName   = getIntent().getStringExtra("imgALT") ;
@@ -85,6 +109,7 @@ public class WallpaperActivity extends AppCompatActivity {
     private void sync(){
         setViews() ;
         setOnClick() ;
+
     }
     private void setViews(){
         loadingPB.setVisibility(View.VISIBLE) ;
@@ -147,7 +172,6 @@ public class WallpaperActivity extends AppCompatActivity {
         mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgURL).setValue(url);
         showCustomToast("Wallpaper has been added");
     }
-
     private void showBottomSheetDialog(){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this) ;
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialoge_img_info) ;
@@ -157,7 +181,11 @@ public class WallpaperActivity extends AppCompatActivity {
         TextView photographerName = bottomSheetDialog.findViewById(R.id.idTVPhotograph) ;
 
         String dimensions = imgHeight +" X "+imgWidth ;
+
         // setting resources
+        if(imgName.trim().equals(""))
+            name.setText("Stock Photo");
+
         name.setText(imgName);
         dim.setText(dimensions);
         photographerName.setText(imgPhotographer) ;
@@ -165,6 +193,7 @@ public class WallpaperActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 downloadImage(view);
+                showAd() ;
             }
         });
 
@@ -176,7 +205,6 @@ public class WallpaperActivity extends AppCompatActivity {
         });
         bottomSheetDialog.show() ;
     }
-
     public void downloadImage(View view) {
         Executors.newSingleThreadExecutor();
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -237,7 +265,118 @@ public class WallpaperActivity extends AppCompatActivity {
             Snackbar.make(view , "Downloaded" , Snackbar.LENGTH_LONG).show() ;
         }
     }
+    private void initializeAdMob(){
+        MobileAds.initialize(WallpaperActivity.this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
 
+            }
+        });
+    }
+    private void loadBannerAd(){
+        mAdView = findViewById(R.id.adView);
+        mAdView.setVisibility(View.VISIBLE);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdImpression() {
+                // Code to be executed when an impression is recorded
+                // for an ad.
+            }
+
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+        });
+    }
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build() ;
+
+        mInterstitialAd.load(WallpaperActivity.this, getResources().getString(R.string.admob_interstitial_id), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        Log.i("AdMob" , "onAdFailedToLoad" + loadAdError) ;
+                        mInterstitialAd = null ;
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        super.onAdLoaded(interstitialAd);
+                        Log.i("AdMob" , "AdLoaded") ;
+                        WallpaperActivity.this.mInterstitialAd = interstitialAd ;
+                    }
+                });
+    }
+    private void showAd(){
+        if(mInterstitialAd != null) {
+            mInterstitialAd.show(WallpaperActivity.this);
+            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+            @Override
+            public void onAdClicked() {
+                // Called when a click is recorded for an ad.
+                Log.d(TAG, "Ad was clicked.");
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                // Called when ad is dismissed.
+                // Set the ad reference to null so you don't show the ad a second time.
+                Log.d(TAG, "Ad dismissed fullscreen content.");
+                mInterstitialAd = null;
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                // Called when ad fails to show.
+                Log.e(TAG, "Ad failed to show fullscreen content.");
+                mInterstitialAd = null;
+            }
+
+            @Override
+            public void onAdImpression() {
+                // Called when an impression is recorded for an ad.
+                Log.d(TAG, "Ad recorded an impression.");
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                // Called when ad is shown.
+                Log.d(TAG, "Ad showed fullscreen content.");
+            }
+        });
+        }
+        else
+        {
+
+        }
+    }
     private void showCustomToast(String message){
         LayoutInflater inflater = getLayoutInflater() ;
         View layout = inflater.inflate(R.layout.custom_toast_layout , (ViewGroup) findViewById(R.id.containerToast)) ;

@@ -49,4 +49,15 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerInParent="true"/>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        ads:adUnitId="@string/admob_banner_id">
+    </com.google.android.gms.ads.AdView>
 </RelativeLayout>
