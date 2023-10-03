@@ -1,4 +1,4 @@
-package com.example.saikouwalls.Views.HomePageActivities.HomePageFragments.CategoryWalls;
+package com.example.saikouwalls.Views.FragmentViews.HomePageFragments.CategoryWalls;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,7 +23,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.saikouwalls.Adapters.WallpaperRVAdapter;
 import com.example.saikouwalls.Models.WallpaperRVModel;
 import com.example.saikouwalls.R;
-import com.example.saikouwalls.Views.HomePageActivities.HomePage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,7 +84,8 @@ public class WallsByCategory extends AppCompatActivity implements SwipeRefreshLa
                         String width = photoObj.getString("width") ;
                         String height = photoObj.getString("height") ;
                         String photographer = photoObj.getString("photographer") ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height)) ;
+                        String photographerURL = photoObj.getString("photographer_url") ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL)) ;
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {

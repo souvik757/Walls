@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.saikouwalls.Models.CategoryRVModel;
 import com.example.saikouwalls.R;
-import com.example.saikouwalls.Views.HomePageActivities.HomePageFragments.CategoryWalls.WallsByCategory;
+import com.example.saikouwalls.Views.FragmentViews.HomePageFragments.CategoryWalls.WallsByCategory;
 
 import java.util.ArrayList;
 

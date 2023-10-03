@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -14,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.saikouwalls.Models.WallpaperRVModel;
 import com.example.saikouwalls.R;
-import com.example.saikouwalls.Services.ExtractClassName;
-import com.example.saikouwalls.Views.WallpaperActivity;
+import com.example.saikouwalls.Views.WallpaperViews.WallpaperActivity;
 
 import java.util.* ;
 public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.ViewHolder> {
@@ -48,6 +48,7 @@ public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context).load(wallpaperList.get(position).getURL()).into(holder.wallpaperIV) ;
+        holder.itemView.setAnimation(AnimationUtils.loadAnimation(context , android.R.anim.slide_in_left));
         holder.itemView.setOnClickListener(view -> {
             WallpaperRVModel model = wallpaperList.get(position) ;
             Intent intent = new Intent(context , WallpaperActivity.class) ;
@@ -57,6 +58,7 @@ public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.
             intent.putExtra("imgHEIGHT" , model.getHEIGHT()) ;
             intent.putExtra("imgALT" , model.getALT()) ;
             intent.putExtra("imgPHOTOGRAPHER" , model.getPHOTOGRAPHER_NAME()) ;
+            intent.putExtra("urlPHOTOGRAPHER" , model.getPHOTOGRAPHER_INFO_URL()) ;
 
             context.startActivity(intent) ;
         });

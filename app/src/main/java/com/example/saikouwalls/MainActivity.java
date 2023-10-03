@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.saikouwalls.Views.HomePageActivities.HomePage;
+import com.example.saikouwalls.Views.FragmentViews.HomePage;
 
 public class MainActivity extends AppCompatActivity {
     // widgets

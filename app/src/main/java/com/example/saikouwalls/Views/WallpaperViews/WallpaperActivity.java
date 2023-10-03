@@ -1,10 +1,11 @@
-package com.example.saikouwalls.Views;
+package com.example.saikouwalls.Views.WallpaperViews;
 
 import static android.content.ContentValues.TAG;
 
 import android.app.WallpaperManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.saikouwalls.R;
 import com.example.saikouwalls.Services.DatabaseKeys;
 import com.example.saikouwalls.Services.ExtractPhotoURLNumber;
+import com.example.saikouwalls.Views.WebViews.PhotographInfoWebActivity;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -71,7 +74,7 @@ public class WallpaperActivity extends AppCompatActivity {
     private ImageView btnInfo ;
     private Button setWallpaper , saveWallpaper ;
     private String url ;
-    private String imgName , imgWidth , imgHeight , imgPhotographer ;
+    private String imgName , imgWidth , imgHeight , imgPhotographer , urlPhotographer;
     private ProgressBar loadingPB ;
     // ad mob interstitial
     private AdView mAdView ;
@@ -84,18 +87,19 @@ public class WallpaperActivity extends AppCompatActivity {
         // admob
         MobileAds.initialize(WallpaperActivity.this) ;
         initializeAdMob();
+        loadBannerAd();
         loadInterstitialAd();
         // getting url from parent activity
         url = getIntent().getStringExtra("imgURL") ;
         init() ;
         sync() ;
-        loadBannerAd();
     }
     private void init(){
         imgName   = getIntent().getStringExtra("imgALT") ;
         imgWidth  = getIntent().getStringExtra("imgWIDTH") ;
         imgHeight = getIntent().getStringExtra("imgHEIGHT") ;
         imgPhotographer = getIntent().getStringExtra("imgPHOTOGRAPHER") ;
+        urlPhotographer = getIntent().getStringExtra("urlPHOTOGRAPHER") ;
 
 
         image = findViewById(R.id.image) ;
@@ -131,6 +135,7 @@ public class WallpaperActivity extends AppCompatActivity {
         setWallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showAd() ;
                 Glide.with(WallpaperActivity.this).asBitmap().load(url).listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
@@ -151,6 +156,7 @@ public class WallpaperActivity extends AppCompatActivity {
                     }
                 }).submit() ;
                 showCustomToast("wallpaper has been set");
+
             }
         });
 
@@ -176,19 +182,16 @@ public class WallpaperActivity extends AppCompatActivity {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this) ;
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialoge_img_info) ;
         RelativeLayout rl5 = bottomSheetDialog.findViewById(R.id.RL5) ;
+        LinearLayout ll1 = bottomSheetDialog.findViewById(R.id.LL1) ;
         TextView name = bottomSheetDialog.findViewById(R.id.idTVName) ;
         TextView dim  = bottomSheetDialog.findViewById(R.id.idTVDim) ;
         TextView photographerName = bottomSheetDialog.findViewById(R.id.idTVPhotograph) ;
-
+        // setting up text resources
         String dimensions = imgHeight +" X "+imgWidth ;
-
-        // setting resources
-        if(imgName.trim().equals(""))
-            name.setText("Stock Photo");
-
         name.setText(imgName);
         dim.setText(dimensions);
         photographerName.setText(imgPhotographer) ;
+        // setting up on click listener
         rl5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,11 +199,18 @@ public class WallpaperActivity extends AppCompatActivity {
                 showAd() ;
             }
         });
-
         bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-
+                // nothing happens on dismiss event
+            }
+        });
+        ll1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(WallpaperActivity.this , PhotographInfoWebActivity.class) ;
+                i.putExtra("PhotographerInfoUrl" , urlPhotographer) ;
+                startActivity(i) ;
             }
         });
         bottomSheetDialog.show() ;

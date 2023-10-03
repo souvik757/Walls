@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.example.saikouwalls'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.saikouwalls"
@@ -26,6 +26,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
     }
 }
 
@@ -54,6 +57,8 @@ dependencies {
     implementation "com.google.firebase:firebase-storage"
     // ad mob
     implementation 'com.google.android.gms:play-services-ads:22.4.0'
+    // web view
+    implementation ("androidx.webkit:webkit:1.8.0")
     // swipe refresh layout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 }

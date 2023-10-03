@@ -1,4 +1,4 @@
-package com.example.saikouwalls.Views;
+package com.example.saikouwalls.Views.WallpaperViews;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

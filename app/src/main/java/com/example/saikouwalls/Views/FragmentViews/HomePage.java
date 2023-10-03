@@ -1,4 +1,4 @@
-package com.example.saikouwalls.Views.HomePageActivities;
+package com.example.saikouwalls.Views.FragmentViews;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,11 +7,12 @@ import androidx.core.content.ContextCompat;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.example.saikouwalls.Views.HomePageActivities.HomePageFragments.CategoryWalls.CategoryWalls;
-import com.example.saikouwalls.Views.HomePageActivities.HomePageFragments.PopularWalls;
+import com.example.saikouwalls.Views.FragmentViews.HomePageFragments.CategoryWalls.CategoryWalls;
+import com.example.saikouwalls.Views.FragmentViews.HomePageFragments.PopularWalls;
 import com.example.saikouwalls.R;
-import com.example.saikouwalls.Views.HomePageActivities.HomePageFragments.SavedWalls;
+import com.example.saikouwalls.Views.FragmentViews.HomePageFragments.SavedWalls;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
     // widgets
     private BottomNavigationView bottomNavigationView ;
     public String UniqueID ;
+    private long pressedTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,5 +72,14 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         SharedPreferences.Editor editor = sharedPreferences.edit() ;
         editor.putString("unique_user" , UniqueID) ;
         editor.commit() ;
+    }
+    @Override
+    public void onBackPressed() {
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        pressedTime = System.currentTimeMillis();
     }
 }

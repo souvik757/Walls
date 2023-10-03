@@ -1,4 +1,4 @@
-package com.example.saikouwalls.Views.HomePageActivities.HomePageFragments.CategoryWalls;
+package com.example.saikouwalls.Views.FragmentViews.HomePageFragments.CategoryWalls;
 
 import android.os.Bundle;
 
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.example.saikouwalls.Adapters.CategoryRVAdapter;
 import com.example.saikouwalls.Models.CategoryRVModel;
 import com.example.saikouwalls.R;
-import com.example.saikouwalls.Views.HomePageActivities.HomePage;
+import com.example.saikouwalls.Views.FragmentViews.HomePage;
 
 import java.util.ArrayList;
 

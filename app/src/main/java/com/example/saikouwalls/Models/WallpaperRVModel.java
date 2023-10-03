@@ -5,19 +5,21 @@ public class WallpaperRVModel {
     private String URL ;
     private String ALT ;
     private String PHOTOGRAPHER_NAME ;
+    private String PHOTOGRAPHER_INFO_URL ;
     private String WIDTH ;
     private String HEIGHT ;
 
     public WallpaperRVModel() {
     }
 
-    public WallpaperRVModel(String ID, String URL, String ALT, String PHOTOGRAPHER_NAME, String WIDTH, String HEIGHT) {
+    public WallpaperRVModel(String ID, String URL, String ALT, String PHOTOGRAPHER_NAME, String WIDTH, String HEIGHT , String PHOTOGRAPHER_INFO_URL) {
         this.ID = ID;
         this.URL = URL;
         this.ALT = ALT;
         this.PHOTOGRAPHER_NAME = PHOTOGRAPHER_NAME;
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
+        this.PHOTOGRAPHER_INFO_URL = PHOTOGRAPHER_INFO_URL ;
     }
 
     public String getID() {
@@ -66,5 +68,13 @@ public class WallpaperRVModel {
 
     public void setHEIGHT(String HEIGHT) {
         this.HEIGHT = HEIGHT;
+    }
+
+    public String getPHOTOGRAPHER_INFO_URL() {
+        return PHOTOGRAPHER_INFO_URL;
+    }
+
+    public void setPHOTOGRAPHER_INFO_URL(String PHOTOGRAPHER_INFO_URL) {
+        this.PHOTOGRAPHER_INFO_URL = PHOTOGRAPHER_INFO_URL;
     }
 }

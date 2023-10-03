@@ -1,7 +1,9 @@
-package com.example.saikouwalls.Views.HomePageActivities.HomePageFragments;
+package com.example.saikouwalls.Views.FragmentViews.HomePageFragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +13,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.saikouwalls.Adapters.WallpaperRVAdapter;
 import com.example.saikouwalls.Models.WallpaperRVModel;
 import com.example.saikouwalls.R;
-import com.example.saikouwalls.Views.HomePageActivities.HomePage;
+import com.example.saikouwalls.Views.FragmentViews.HomePage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +92,7 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
     // widgets & variables
     private View parentViewHolder ;
     private SwipeRefreshLayout swipeRefreshLayout ;
+    private RelativeLayout RL ;
     private RecyclerView wallpaperRV ;
     private EditText searchEdt ;
     private ImageView searchIV ;
@@ -106,6 +112,7 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
         return parentViewHolder ;
     }
     private void init(){
+        RL = parentViewHolder.findViewById(R.id.idLL1) ;
         wallpaperRV = parentViewHolder.findViewById(R.id.idRVWallpapers) ;
         searchEdt = parentViewHolder.findViewById(R.id.idEdtSearch) ;
         searchIV = parentViewHolder.findViewById(R.id.idIVSearch) ;
@@ -116,14 +123,15 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
         GridLayoutManager layoutManager = new GridLayoutManager(getContext() , 2) ;
         wallpaperRVAdapter = new WallpaperRVAdapter(wallpaperArrayList , getContext()) ;
 
+        wallpaperRV.setHasFixedSize(true);
         wallpaperRV.setLayoutManager(layoutManager);
         wallpaperRV.setAdapter(wallpaperRVAdapter);
 
         getWallpapers() ;
-
         SetOnClickListener() ;
     }
-    private void SetOnClickListener(){
+
+    private void SetOnClickListener() {
         searchIV.setOnClickListener(view -> {
             String searchStr = searchEdt.getText().toString() ;
             if(searchStr.isEmpty())
@@ -160,8 +168,9 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
                         String width = photoObj.getString("width") ;
                         String height = photoObj.getString("height") ;
                         String photographer = photoObj.getString("photographer") ;
+                        String photographerURL = photoObj.getString("photographer_url") ;
                         String ID = ((HomePage)getActivity()).UniqueID ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height)) ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL)) ;
                     }
                     wallpaperRVAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -204,8 +213,9 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
                         String width = photoObj.getString("width") ;
                         String height = photoObj.getString("height") ;
                         String photographer = photoObj.getString("photographer") ;
+                        String photographerURL = photoObj.getString("photographer_url") ;
                         String ID = ((HomePage)getActivity()).UniqueID ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height)) ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL)) ;
                     }
                     wallpaperRVAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {

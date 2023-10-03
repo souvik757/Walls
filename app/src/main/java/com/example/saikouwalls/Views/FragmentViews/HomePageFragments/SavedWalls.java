@@ -1,4 +1,4 @@
-package com.example.saikouwalls.Views.HomePageActivities.HomePageFragments;
+package com.example.saikouwalls.Views.FragmentViews.HomePageFragments;
 
 import android.os.Bundle;
 
@@ -15,12 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.saikouwalls.Adapters.SavedWallpaperRVAdapter;
-import com.example.saikouwalls.Adapters.WallpaperRVAdapter;
 import com.example.saikouwalls.Models.SavedWallpaperRVModel;
-import com.example.saikouwalls.Models.WallpaperRVModel;
 import com.example.saikouwalls.R;
 import com.example.saikouwalls.Services.DatabaseKeys;
-import com.example.saikouwalls.Views.HomePageActivities.HomePage;
+import com.example.saikouwalls.Views.FragmentViews.HomePage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
