@@ -85,7 +85,8 @@ public class WallsByCategory extends AppCompatActivity implements SwipeRefreshLa
                         String height = photoObj.getString("height") ;
                         String photographer = photoObj.getString("photographer") ;
                         String photographerURL = photoObj.getString("photographer_url") ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL)) ;
+                        String photoColor = photoObj.getString("avg_color") ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL,photoColor)) ;
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {

@@ -8,11 +8,12 @@ public class WallpaperRVModel {
     private String PHOTOGRAPHER_INFO_URL ;
     private String WIDTH ;
     private String HEIGHT ;
+    private String AVG_COLOR ;
 
     public WallpaperRVModel() {
     }
 
-    public WallpaperRVModel(String ID, String URL, String ALT, String PHOTOGRAPHER_NAME, String WIDTH, String HEIGHT , String PHOTOGRAPHER_INFO_URL) {
+    public WallpaperRVModel(String ID, String URL, String ALT, String PHOTOGRAPHER_NAME, String WIDTH, String HEIGHT , String PHOTOGRAPHER_INFO_URL , String AVG_COLOR) {
         this.ID = ID;
         this.URL = URL;
         this.ALT = ALT;
@@ -20,6 +21,15 @@ public class WallpaperRVModel {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
         this.PHOTOGRAPHER_INFO_URL = PHOTOGRAPHER_INFO_URL ;
+        this.AVG_COLOR = AVG_COLOR ;
+    }
+
+    public String getAVG_COLOR() {
+        return AVG_COLOR;
+    }
+
+    public void setAVG_COLOR(String AVG_COLOR) {
+        this.AVG_COLOR = AVG_COLOR;
     }
 
     public String getID() {

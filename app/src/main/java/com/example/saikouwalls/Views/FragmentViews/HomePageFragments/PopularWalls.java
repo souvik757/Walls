@@ -169,8 +169,9 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
                         String height = photoObj.getString("height") ;
                         String photographer = photoObj.getString("photographer") ;
                         String photographerURL = photoObj.getString("photographer_url") ;
+                        String imgColor = photoObj.getString("avg_color") ;
                         String ID = ((HomePage)getActivity()).UniqueID ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL)) ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL,imgColor)) ;
                     }
                     wallpaperRVAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -214,8 +215,9 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
                         String height = photoObj.getString("height") ;
                         String photographer = photoObj.getString("photographer") ;
                         String photographerURL = photoObj.getString("photographer_url") ;
+                        String imgColor = photoObj.getString("avg_color") ;
                         String ID = ((HomePage)getActivity()).UniqueID ;
-                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL)) ;
+                        wallpaperArrayList.add(new WallpaperRVModel(ID ,imgUrl,imgDes,photographer,width,height,photographerURL,imgColor)) ;
                     }
                     wallpaperRVAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {

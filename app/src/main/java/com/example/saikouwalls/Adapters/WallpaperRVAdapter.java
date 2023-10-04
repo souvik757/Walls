@@ -59,6 +59,7 @@ public class WallpaperRVAdapter extends RecyclerView.Adapter<WallpaperRVAdapter.
             intent.putExtra("imgALT" , model.getALT()) ;
             intent.putExtra("imgPHOTOGRAPHER" , model.getPHOTOGRAPHER_NAME()) ;
             intent.putExtra("urlPHOTOGRAPHER" , model.getPHOTOGRAPHER_INFO_URL()) ;
+            intent.putExtra("imgCOLOR" , model.getAVG_COLOR()) ;
 
             context.startActivity(intent) ;
         });

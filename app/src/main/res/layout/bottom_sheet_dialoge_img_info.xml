@@ -3,7 +3,6 @@
     android:id="@+id/bottom_sheet_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="20dp"
-    android:background="@color/ash"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <RelativeLayout
@@ -12,9 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/detailsTV"
             android:text="Details"
             android:textSize="25sp"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
@@ -27,14 +26,13 @@
         <TextView
             android:id="@+id/TV1"
             android:text="Name :"
-            android:textColor="@color/grey"
+            android:textStyle="bold"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/idTVName"
             android:hint="stock photo"
-            android:textColor="@color/white"
             android:layout_below="@+id/TV1"
             android:layout_marginTop="3dp"
             android:layout_width="wrap_content"
@@ -49,13 +47,12 @@
         <TextView
             android:id="@+id/TV2"
             android:text="Dimensions :"
-            android:textColor="@color/grey"
             android:textSize="16sp"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/idTVDim"
-            android:textColor="@color/white"
             android:layout_below="@+id/TV2"
             android:layout_marginTop="3dp"
             android:layout_width="wrap_content"
@@ -70,7 +67,7 @@
         <TextView
             android:id="@+id/TV3"
             android:text="Photographer :"
-            android:textColor="@color/grey"
+            android:textStyle="bold"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -82,7 +79,6 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/idTVPhotograph"
-                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView

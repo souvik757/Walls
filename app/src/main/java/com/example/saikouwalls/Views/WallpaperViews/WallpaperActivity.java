@@ -1,13 +1,13 @@
 package com.example.saikouwalls.Views.WallpaperViews;
 
 import static android.content.ContentValues.TAG;
-
 import android.app.WallpaperManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -74,7 +74,7 @@ public class WallpaperActivity extends AppCompatActivity {
     private ImageView btnInfo ;
     private Button setWallpaper , saveWallpaper ;
     private String url ;
-    private String imgName , imgWidth , imgHeight , imgPhotographer , urlPhotographer;
+    private String imgName , imgWidth , imgHeight , imgPhotographer , urlPhotographer , imgColor;
     private ProgressBar loadingPB ;
     // ad mob interstitial
     private AdView mAdView ;
@@ -100,6 +100,7 @@ public class WallpaperActivity extends AppCompatActivity {
         imgHeight = getIntent().getStringExtra("imgHEIGHT") ;
         imgPhotographer = getIntent().getStringExtra("imgPHOTOGRAPHER") ;
         urlPhotographer = getIntent().getStringExtra("urlPHOTOGRAPHER") ;
+        imgColor = getIntent().getStringExtra("imgCOLOR") ;
 
 
         image = findViewById(R.id.image) ;
@@ -116,6 +117,7 @@ public class WallpaperActivity extends AppCompatActivity {
 
     }
     private void setViews(){
+        adjustTextColor() ;
         loadingPB.setVisibility(View.VISIBLE) ;
         Glide.with(WallpaperActivity.this).load(url).listener(new RequestListener<Drawable>() {
             @Override
@@ -131,6 +133,18 @@ public class WallpaperActivity extends AppCompatActivity {
             }
         }).into(image) ;
     }
+
+    private void adjustTextColor() {
+        if(getBrightness(imgColor)){
+            setWallpaper.setTextColor(getColor(R.color.green));
+            saveWallpaper.setTextColor(getColor(R.color.green));
+        }
+        else {
+            setWallpaper.setTextColor(getColor(R.color.orange));
+            saveWallpaper.setTextColor(getColor(R.color.orange));
+        }
+    }
+
     private void setOnClick(){
         setWallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,16 +195,42 @@ public class WallpaperActivity extends AppCompatActivity {
     private void showBottomSheetDialog(){
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this) ;
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialoge_img_info) ;
+        RelativeLayout sheet = bottomSheetDialog.findViewById(R.id.bottom_sheet_layout) ;
         RelativeLayout rl5 = bottomSheetDialog.findViewById(R.id.RL5) ;
         LinearLayout ll1 = bottomSheetDialog.findViewById(R.id.LL1) ;
+
+        TextView DetailsTV = bottomSheetDialog.findViewById(R.id.detailsTV) ;
+        TextView DimensionsTV = bottomSheetDialog.findViewById(R.id.TV2) ;
+        TextView PhotographerTV = bottomSheetDialog.findViewById(R.id.TV3) ;
+        TextView NameTV = bottomSheetDialog.findViewById(R.id.TV1) ;
         TextView name = bottomSheetDialog.findViewById(R.id.idTVName) ;
         TextView dim  = bottomSheetDialog.findViewById(R.id.idTVDim) ;
         TextView photographerName = bottomSheetDialog.findViewById(R.id.idTVPhotograph) ;
+        // setting up avg color views
+        sheet.setBackgroundColor(Color.parseColor(imgColor)) ;
         // setting up text resources
         String dimensions = imgHeight +" X "+imgWidth ;
+        if(getBrightness(imgColor)){
+            DetailsTV .setTextColor(getColor(R.color.white));
+            DimensionsTV.setTextColor(getColor(R.color.white));
+            PhotographerTV.setTextColor(getColor(R.color.white));
+            NameTV.setTextColor(getColor(R.color.white));
+            name.setTextColor(getColor(R.color.white));
+            dim.setTextColor(getColor(R.color.white));
+            photographerName.setTextColor(getColor(R.color.white));
+        }
+        else {
+            DetailsTV .setTextColor(getColor(R.color.black));
+            DimensionsTV.setTextColor(getColor(R.color.black));
+            PhotographerTV.setTextColor(getColor(R.color.black));
+            NameTV.setTextColor(getColor(R.color.black));
+            name.setTextColor(getColor(R.color.black));
+            dim.setTextColor(getColor(R.color.black));
+            photographerName.setTextColor(getColor(R.color.black));
+        }
         name.setText(imgName);
         dim.setText(dimensions);
-        photographerName.setText(imgPhotographer) ;
+        photographerName.setText(imgPhotographer);
         // setting up on click listener
         rl5.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,6 +426,14 @@ public class WallpaperActivity extends AppCompatActivity {
         {
 
         }
+    }
+    private boolean getBrightness(String value){
+        int red = Integer.parseInt(value.substring(1, 1 + 2), 16);
+        int green = Integer.parseInt(value.substring(3, 3 + 2), 16);
+        int blue = Integer.parseInt(value.substring(5, 5 + 2), 16);
+        if (red + green + blue <= 0xff * 3 / 2)
+            return true ; // white
+        return false ; // black
     }
     private void showCustomToast(String message){
         LayoutInflater inflater = getLayoutInflater() ;
