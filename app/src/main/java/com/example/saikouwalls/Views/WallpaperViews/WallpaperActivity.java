@@ -1,6 +1,8 @@
 package com.example.saikouwalls.Views.WallpaperViews;
 
 import static android.content.ContentValues.TAG;
+
+import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -13,7 +15,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +26,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +56,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
@@ -67,7 +74,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Executors;
 
-
 public class WallpaperActivity extends AppCompatActivity {
     private WallpaperManager wallpaperManager ;
     private ImageView image ;
@@ -79,11 +85,26 @@ public class WallpaperActivity extends AppCompatActivity {
     // ad mob interstitial
     private AdView mAdView ;
     private InterstitialAd mInterstitialAd ;
-
+    // bottom dialog layout widgets
+    private BottomSheetDialog bottomSheetDialog ;
+    private RelativeLayout sheet ;
+    private RelativeLayout rl5 ;
+    private LinearLayout ll1 ;
+    private TextView DetailsTV ;
+    private TextView DimensionsTV ;
+    private TextView PhotographerTV ;
+    private TextView NameTV ;
+    private TextView name ;
+    private TextView dim ;
+    private TextView photographerName ;
+    // set as background layout
+    private RadioGroup radioGroup ;
+    private RadioButton radioButton ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpaper);
+
         // admob
         MobileAds.initialize(WallpaperActivity.this) ;
         initializeAdMob();
@@ -91,8 +112,14 @@ public class WallpaperActivity extends AppCompatActivity {
         loadInterstitialAd();
         // getting url from parent activity
         url = getIntent().getStringExtra("imgURL") ;
+
         init() ;
         sync() ;
+        // give a exposure of image information for 1.7 s
+        bottomSheetDialog.show() ;
+        new Handler().postDelayed(()->{
+            bottomSheetDialog.hide();
+        } , 1700) ;
     }
     private void init(){
         imgName   = getIntent().getStringExtra("imgALT") ;
@@ -110,102 +137,27 @@ public class WallpaperActivity extends AppCompatActivity {
         loadingPB = findViewById(R.id.idPBLoading) ;
 
         wallpaperManager = WallpaperManager.getInstance(getApplicationContext()) ;
+
+        // Initialize BottomDialog Layout
+        initializeBottomDialogLayout();
+        initializeResourcesForBottomDialogLayout();
+        initializeOnCLickForBottomDialogLayout();
     }
-    private void sync(){
-        setViews() ;
-        setOnClick() ;
-
-    }
-    private void setViews(){
-        adjustTextColor() ;
-        loadingPB.setVisibility(View.VISIBLE) ;
-        Glide.with(WallpaperActivity.this).load(url).listener(new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                loadingPB.setVisibility(View.GONE) ;
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                loadingPB.setVisibility(View.GONE) ;
-                return false;
-            }
-        }).into(image) ;
-    }
-
-    private void adjustTextColor() {
-        if(getBrightness(imgColor)){
-            setWallpaper.setTextColor(getColor(R.color.green));
-            saveWallpaper.setTextColor(getColor(R.color.green));
-        }
-        else {
-            setWallpaper.setTextColor(getColor(R.color.orange));
-            saveWallpaper.setTextColor(getColor(R.color.orange));
-        }
-    }
-
-    private void setOnClick(){
-        setWallpaper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAd() ;
-                Glide.with(WallpaperActivity.this).asBitmap().load(url).listener(new RequestListener<Bitmap>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                        showCustomToast("Something went wrong");
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                        try {
-                            wallpaperManager.setBitmap(resource);
-                            showCustomToast("wallpaper has been set");
-                        } catch (IOException e) {
-                            showCustomToast("fail to set wallpaper");
-                            throw new RuntimeException(e);
-                        }
-                        return false;
-                    }
-                }).submit() ;
-                showCustomToast("wallpaper has been set");
-
-            }
-        });
-
-        saveWallpaper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String savedID = getIntent().getStringExtra("userID") ;
-                saveToDatabase(savedID) ;
-            }
-        });
-
-        btnInfo.setOnClickListener(view -> {
-            showBottomSheetDialog() ;
-        });
-    }
-    private void saveToDatabase(String UID){
-        String imgID = ExtractPhotoURLNumber.getNumber(url) ;
-        DatabaseReference mRealtime = FirebaseDatabase.getInstance().getReference();
-        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgURL).setValue(url);
-        showCustomToast("Wallpaper has been added");
-    }
-    private void showBottomSheetDialog(){
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this) ;
+    private void initializeBottomDialogLayout() {
+        bottomSheetDialog = new BottomSheetDialog(this) ;
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialoge_img_info) ;
-        RelativeLayout sheet = bottomSheetDialog.findViewById(R.id.bottom_sheet_layout) ;
-        RelativeLayout rl5 = bottomSheetDialog.findViewById(R.id.RL5) ;
-        LinearLayout ll1 = bottomSheetDialog.findViewById(R.id.LL1) ;
-
-        TextView DetailsTV = bottomSheetDialog.findViewById(R.id.detailsTV) ;
-        TextView DimensionsTV = bottomSheetDialog.findViewById(R.id.TV2) ;
-        TextView PhotographerTV = bottomSheetDialog.findViewById(R.id.TV3) ;
-        TextView NameTV = bottomSheetDialog.findViewById(R.id.TV1) ;
-        TextView name = bottomSheetDialog.findViewById(R.id.idTVName) ;
-        TextView dim  = bottomSheetDialog.findViewById(R.id.idTVDim) ;
-        TextView photographerName = bottomSheetDialog.findViewById(R.id.idTVPhotograph) ;
+        sheet = bottomSheetDialog.findViewById(R.id.bottom_sheet_layout) ;
+        rl5 = bottomSheetDialog.findViewById(R.id.RL5) ;
+        ll1 = bottomSheetDialog.findViewById(R.id.LL1) ;
+        DetailsTV = bottomSheetDialog.findViewById(R.id.detailsTV) ;
+        DimensionsTV = bottomSheetDialog.findViewById(R.id.TV2) ;
+        PhotographerTV = bottomSheetDialog.findViewById(R.id.TV3) ;
+        NameTV = bottomSheetDialog.findViewById(R.id.TV1) ;
+        name = bottomSheetDialog.findViewById(R.id.idTVName) ;
+        dim  = bottomSheetDialog.findViewById(R.id.idTVDim) ;
+        photographerName = bottomSheetDialog.findViewById(R.id.idTVPhotograph) ;
+    }
+    private void initializeResourcesForBottomDialogLayout(){
         // setting up avg color views
         sheet.setBackgroundColor(Color.parseColor(imgColor)) ;
         // setting up text resources
@@ -231,7 +183,8 @@ public class WallpaperActivity extends AppCompatActivity {
         name.setText(imgName);
         dim.setText(dimensions);
         photographerName.setText(imgPhotographer);
-        // setting up on click listener
+    }
+    private void initializeOnCLickForBottomDialogLayout(){
         rl5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,7 +206,153 @@ public class WallpaperActivity extends AppCompatActivity {
                 startActivity(i) ;
             }
         });
-        bottomSheetDialog.show() ;
+    }
+    private void sync(){
+        setViews() ;
+        setOnClick() ;
+
+    }
+    private void setViews(){
+        adjustTextColor() ;
+        loadingPB.setVisibility(View.VISIBLE) ;
+        Glide.with(WallpaperActivity.this).load(url).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                loadingPB.setVisibility(View.GONE) ;
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                loadingPB.setVisibility(View.GONE) ;
+                return false;
+            }
+        }).into(image) ;
+    }
+    private void adjustTextColor() {
+        if(getBrightness(imgColor)){
+            setWallpaper.setTextColor(getColor(R.color.green));
+            saveWallpaper.setTextColor(getColor(R.color.green));
+        }
+        else {
+            setWallpaper.setTextColor(getColor(R.color.orange));
+            saveWallpaper.setTextColor(getColor(R.color.orange));
+        }
+    }
+    private void setOnClick(){
+        // set wallpaper
+        setWallpaper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAd() ;
+                showSetAsOptions() ;
+            }
+        });
+        // save wallpaper
+        saveWallpaper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String savedID = getIntent().getStringExtra("userID") ;
+                saveToDatabase(savedID) ;
+            }
+        });
+        // show information
+        btnInfo.setOnClickListener(view -> {
+            bottomSheetDialog.show() ;
+        });
+    }
+    private void showSetAsOptions() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(WallpaperActivity.this) ;
+        final View customLayout = getLayoutInflater().inflate(R.layout.set_as_dialog_layout , null) ;
+        builder.setView(customLayout) ;
+        builder.setPositiveButton("set" , ((dialog, which) -> {
+            radioGroup = customLayout.findViewById(R.id.idSetAsRadioGroup) ;
+            int selectedID = radioGroup.getCheckedRadioButtonId() ;
+            radioButton = customLayout.findViewById(selectedID) ;
+            String buttonText = radioButton.getText().toString() ;
+            if(buttonText.equals(getString(R.string.set_as_bg)))
+                setAsBackground() ;
+            else if(buttonText.equals(getString(R.string.set_as_lck)))
+                setAsLockScreen();
+            else if(buttonText.equals(getString(R.string.set_as_both)))
+                setAsBoth() ;
+        })) ;
+        AlertDialog dialog = builder.create();
+        dialog.setTitle("Set Wallpaper");
+        dialog.show();
+    }
+    private void setAsBackground(){
+        Glide.with(WallpaperActivity.this).asBitmap().load(url).listener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                showCustomToast("Something went wrong");
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                try {
+                    wallpaperManager.setBitmap(resource);
+                    showCustomToast("wallpaper has been set");
+                } catch (IOException e) {
+                    showCustomToast("fail to set wallpaper");
+                    throw new RuntimeException(e);
+                }
+                return false;
+            }
+        }).submit() ;
+        showCustomToast("wallpaper has been set");
+    }
+    private void setAsLockScreen(){
+        Glide.with(WallpaperActivity.this).asBitmap().load(url).listener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                showCustomToast("Something went wrong");
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                try {
+                    WallpaperManager.getInstance(WallpaperActivity.this).setBitmap(resource , null , true , WallpaperManager.FLAG_LOCK) ;
+                    showCustomToast("wallpaper has been set");
+                } catch (IOException e) {
+                    showCustomToast("fail to set wallpaper");
+                    throw new RuntimeException(e);
+                }
+                return false;
+            }
+        }).submit() ;
+        showCustomToast("wallpaper has been set");
+    }
+    private void setAsBoth(){
+        Glide.with(WallpaperActivity.this).asBitmap().load(url).listener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                showCustomToast("Something went wrong");
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                try {
+                    wallpaperManager.setBitmap(resource);
+                    WallpaperManager.getInstance(WallpaperActivity.this).setBitmap(resource , null , true , WallpaperManager.FLAG_LOCK) ;
+                    showCustomToast("wallpaper has been set");
+                } catch (IOException e) {
+                    showCustomToast("fail to set wallpaper");
+                    throw new RuntimeException(e);
+                }
+                return false;
+            }
+        }).submit() ;
+        showCustomToast("wallpaper has been set");
+    }
+    private void saveToDatabase(String UID){
+        String imgID = ExtractPhotoURLNumber.getNumber(url) ;
+        DatabaseReference mRealtime = FirebaseDatabase.getInstance().getReference();
+        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgURL).setValue(url);
+        showCustomToast("Wallpaper has been added");
     }
     public void downloadImage(View view) {
         Executors.newSingleThreadExecutor();

@@ -1,105 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="20dp"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="8dp"
+        android:layout_margin="16dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/sliding_bar"/>
     <RelativeLayout
-        android:id="@+id/RL1"
-        android:padding="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/detailsTV"
-            android:text="Details"
-            android:textSize="25sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/RL2"
-        android:layout_below="@+id/RL1"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/TV1"
-            android:text="Name :"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/idTVName"
-            android:hint="stock photo"
-            android:layout_below="@+id/TV1"
-            android:layout_marginTop="3dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/RL3"
-        android:layout_below="@+id/RL2"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/TV2"
-            android:text="Dimensions :"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/idTVDim"
-            android:layout_below="@+id/TV2"
-            android:layout_marginTop="3dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/RL4"
-        android:layout_below="@+id/RL3"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/TV3"
-            android:text="Photographer :"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <LinearLayout
-            android:id="@+id/LL1"
-            android:layout_below="@+id/TV3"
-            android:layout_marginTop="3dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="16dp"
+        android:padding="5dp">
+        <RelativeLayout
+            android:id="@+id/RL1"
+            android:padding="5dp"
+            android:layout_marginBottom="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/idTVPhotograph"
+                android:id="@+id/detailsTV"
+                android:text="Details"
+                android:textSize="25sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <ImageView
-                android:background="@drawable/link"
-                android:backgroundTint="@color/blue"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_width="16dp"
-                android:layout_height="16dp"/>
-        </LinearLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/RL5"
-        android:layout_below="@+id/RL4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/baseline_download_24"
-            android:backgroundTint="@color/blue"
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/RL2"
+            android:layout_below="@+id/RL1"
+            android:padding="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/TV1"
+                android:text="Name :"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/idTVName"
+                android:hint="stock photo"
+                android:layout_below="@+id/TV1"
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/RL3"
+            android:layout_below="@+id/RL2"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/TV2"
+                android:text="Dimensions :"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/idTVDim"
+                android:layout_below="@+id/TV2"
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/RL4"
+            android:layout_below="@+id/RL3"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/TV3"
+                android:text="Photographer :"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:id="@+id/LL1"
+                android:layout_below="@+id/TV3"
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/idTVPhotograph"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:background="@drawable/link"
+                    android:backgroundTint="@color/blue"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/RL5"
+            android:layout_below="@+id/RL4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/baseline_download_24"
+                android:backgroundTint="@color/blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

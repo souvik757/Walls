@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.itemView.setAnimation(AnimationUtils.loadAnimation(context , R.anim.scale_in));
         CategoryRVModel model = categoryRVModels.get(position) ;
         holder.categoryTV.setText(model.getCategory()) ;
         if(!model.getImgUrl().isEmpty())

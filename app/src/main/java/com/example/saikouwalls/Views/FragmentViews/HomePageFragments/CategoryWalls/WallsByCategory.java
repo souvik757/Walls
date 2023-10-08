@@ -1,6 +1,7 @@
 package com.example.saikouwalls.Views.FragmentViews.HomePageFragments.CategoryWalls;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -39,6 +40,7 @@ public class WallsByCategory extends AppCompatActivity implements SwipeRefreshLa
     private RecyclerView categorizedWallpaperRV ;
     private WallpaperRVAdapter adapter ;
     private ProgressBar loadBar ;
+    private TextView categoryTextView ;
     private String category ;
     private String ID ;
     @Override
@@ -56,9 +58,11 @@ public class WallsByCategory extends AppCompatActivity implements SwipeRefreshLa
         category = getIntent().getStringExtra("SelectedCategory") ;
         loadBar = findViewById(R.id.idPBLoading) ;
         categorizedWallpaperRV = findViewById(R.id.idRVWallpapers) ;
+        categoryTextView = findViewById(R.id.idTextCategory) ;
         wallpaperArrayList = new ArrayList<>() ;
     }
     private void sync(){
+        setResources();
         GridLayoutManager layoutManager = new GridLayoutManager(this , 2) ;
         adapter = new WallpaperRVAdapter(wallpaperArrayList , this) ;
 
@@ -66,6 +70,9 @@ public class WallsByCategory extends AppCompatActivity implements SwipeRefreshLa
         categorizedWallpaperRV.setAdapter(adapter) ;
 
         getWallpapers() ;
+    }
+    private void setResources(){
+        categoryTextView.setText(category) ;
     }
     private void getWallpapers() {
         loadBar.setVisibility(View.VISIBLE);
