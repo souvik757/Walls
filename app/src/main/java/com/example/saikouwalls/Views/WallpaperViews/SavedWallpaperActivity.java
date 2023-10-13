@@ -45,7 +45,7 @@ public class SavedWallpaperActivity extends AppCompatActivity {
         init() ;
         sync() ;
     }
-    private void init(){
+    private void init() {
         url = getIntent().getStringExtra("imgURL") ;
 
         image = findViewById(R.id.idImgWallpaper) ;
@@ -55,11 +55,11 @@ public class SavedWallpaperActivity extends AppCompatActivity {
 
         wallpaperManager = WallpaperManager.getInstance(getApplicationContext()) ;
     }
-    private void sync(){
+    private void sync() {
         setViews() ;
         setOnClick() ;
     }
-    private void setViews(){
+    private void setViews() {
         loadingPB.setVisibility(View.VISIBLE) ;
         Glide.with(SavedWallpaperActivity.this).load(url).listener(new RequestListener<Drawable>() {
             @Override
@@ -75,7 +75,7 @@ public class SavedWallpaperActivity extends AppCompatActivity {
             }
         }).into(image) ;
     }
-    private void setOnClick(){
+    private void setOnClick() {
         setWallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +85,6 @@ public class SavedWallpaperActivity extends AppCompatActivity {
                         showCustomToast("Something went wrong");
                         return false;
                     }
-
                     @Override
                     public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                         try {
@@ -101,7 +100,6 @@ public class SavedWallpaperActivity extends AppCompatActivity {
                 showCustomToast("wallpaper has been set");
             }
         });
-
         removeWallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,8 +123,7 @@ public class SavedWallpaperActivity extends AppCompatActivity {
             }
         }) ;
     }
-
-    private void showCustomToast(String message){
+    private void showCustomToast(String message) {
         LayoutInflater inflater = getLayoutInflater() ;
         View layout = inflater.inflate(R.layout.custom_toast_layout , (ViewGroup) findViewById(R.id.containerToast)) ;
         ImageView img = layout.findViewById(R.id.imageViewToast) ;

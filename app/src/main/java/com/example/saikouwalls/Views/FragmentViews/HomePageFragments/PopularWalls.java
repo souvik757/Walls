@@ -120,7 +120,7 @@ public class PopularWalls extends Fragment implements SwipeRefreshLayout.OnRefre
         wallpaperArrayList = new ArrayList<>() ;
     }
     private void sync(){
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext() , 2) ;
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext() , 3) ;
         wallpaperRVAdapter = new WallpaperRVAdapter(wallpaperArrayList , getContext()) ;
 
         wallpaperRV.setHasFixedSize(true);

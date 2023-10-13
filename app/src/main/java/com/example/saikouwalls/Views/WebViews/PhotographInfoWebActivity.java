@@ -3,6 +3,7 @@ package com.example.saikouwalls.Views.WebViews;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.view.View;
 import android.webkit.WebView ;
 import android.webkit.WebSettings ;
 import android.webkit.WebViewClient ;
@@ -24,6 +25,11 @@ public class PhotographInfoWebActivity extends AppCompatActivity {
         WebSettings webSettings = mWebView.getSettings() ;
         webSettings.setJavaScriptEnabled(true);
     }
+
+    public void cancelWebView(View view) {
+        finish() ;
+    }
+
     public class mWebClient extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {

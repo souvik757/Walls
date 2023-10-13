@@ -5,9 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/trans_blue"
     tools:context=".Views.WebViews.PhotographInfoWebActivity">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/backButton"
+        android:onClick="cancelWebView"
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:src="@drawable/baseline_keyboard_backspace_24"/>
     <WebView
         android:id="@+id/webview"
+        android:layout_below="@+id/backButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </RelativeLayout>
