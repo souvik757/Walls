@@ -55,6 +55,12 @@ public class SavedWallpaperRVAdapter extends RecyclerView.Adapter<SavedWallpaper
             Intent i = new Intent(context , SavedWallpaperActivity.class) ;
             i.putExtra("imgURL" , model.getURL()) ;
             i.putExtra("userID" , model.getID()) ;
+            i.putExtra("imgWIDTH" , model.getWIDTH()) ;
+            i.putExtra("imgHEIGHT" , model.getHEIGHT()) ;
+            i.putExtra("imgALT" , model.getALT()) ;
+            i.putExtra("imgPHOTOGRAPHER" , model.getPHOTOGRAPHER_NAME()) ;
+            i.putExtra("urlPHOTOGRAPHER" , model.getPHOTOGRAPHER_INFO_URL()) ;
+            i.putExtra("imgCOLOR" , model.getAVG_COLOR()) ;
             context.startActivity(i) ;
         });
     }

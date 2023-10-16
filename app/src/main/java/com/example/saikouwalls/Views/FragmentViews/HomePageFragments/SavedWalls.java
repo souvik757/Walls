@@ -114,7 +114,13 @@ public class SavedWalls extends Fragment implements SwipeRefreshLayout.OnRefresh
                 if(snapshot.exists()) {
                     for (DataSnapshot imgId : snapshot.getChildren()) {
                         String imgUrl = imgId.child(DatabaseKeys.imgURL).getValue(String.class);
-                        wallpaperArrayList.add(new SavedWallpaperRVModel(ID, imgUrl));
+                        String imgWidth = imgId.child(DatabaseKeys.imgWIDTH).getValue(String.class) ;
+                        String imgHeight = imgId.child(DatabaseKeys.imgHEIGHT).getValue(String.class) ;
+                        String imgAlt = imgId.child(DatabaseKeys.imgALT).getValue(String.class) ;
+                        String imgPhotographer = imgId.child(DatabaseKeys.imgPHOTOGRAPHER).getValue(String.class) ;
+                        String urlPhotographer = imgId.child(DatabaseKeys.urlPHOTOGRAPHER).getValue(String.class) ;
+                        String imgColor = imgId.child(DatabaseKeys.imgCOLOR).getValue(String.class) ;
+                        wallpaperArrayList.add(new SavedWallpaperRVModel(ID, imgUrl, imgAlt, imgPhotographer, imgWidth, imgHeight, urlPhotographer, imgColor));
                         loadingBar.setVisibility(View.GONE);
                     }
                     wallpaperRVAdapter.notifyDataSetChanged();

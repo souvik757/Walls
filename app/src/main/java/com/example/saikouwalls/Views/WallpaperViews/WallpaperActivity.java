@@ -352,6 +352,12 @@ public class WallpaperActivity extends AppCompatActivity {
         String imgID = ExtractPhotoURLNumber.getNumber(url) ;
         DatabaseReference mRealtime = FirebaseDatabase.getInstance().getReference();
         mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgURL).setValue(url);
+        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgWIDTH).setValue(imgWidth);
+        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgHEIGHT).setValue(imgHeight);
+        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgALT).setValue(imgName);
+        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgPHOTOGRAPHER).setValue(imgPhotographer);
+        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.urlPHOTOGRAPHER).setValue(urlPhotographer);
+        mRealtime.child(DatabaseKeys.users).child(UID).child(DatabaseKeys.savedImg).child(imgID).child(DatabaseKeys.imgCOLOR).setValue(imgColor);
         showCustomToast("Wallpaper has been added");
     }
     public void downloadImage(View view) {

@@ -104,12 +104,6 @@ public class CategoryWalls extends Fragment implements SwipeRefreshLayout.OnRefr
 
         categoryRV.setLayoutManager(layoutManager);
         categoryRV.setAdapter(adapter);
-
-//        LinearLayoutManager manager = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false) ;
-//        adapter = new CategoryRVAdapter(categoryRVLargeModels , getContext()) ;
-//        categoryRV.setLayoutManager(manager) ;
-//        categoryRV.setAdapter(adapter) ;
-
         getCategories() ;
     }
     private void getCategories() {
@@ -139,18 +133,6 @@ public class CategoryWalls extends Fragment implements SwipeRefreshLayout.OnRefr
                 throw error.toException() ;
             }
         });
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"4K", "https://images.unsplash.com/photo-1650802203688-eac9694fe798?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1931&q=80"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Landscape", "https://images.unsplash.com/34/BA1yLjNnQCI1yisIZGEi_2013-07-16_1922_IMG_9873.jpg?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Travel", "https://images.pexels.com/photos/672358/pexels-photo-672358.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Architecture", "https://plus.unsplash.com/premium_photo-1679496470437-a09743179634?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Arts", "https://images.unsplash.com/photo-1456086272160-b28b0645b729?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Music", "https://images.pexels.com/photos/4348093/pexels-photo-4348093.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Abstract", "https://images.pexels.com/photos/2110951/pexels-photo-2110951.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Cars", "https://images.unsplash.com/photo-1631526090968-6979b72f2ce2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Flowers", "https://images.unsplash.com/photo-1455659817273-f96807779a8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Games", "https://images.unsplash.com/photo-1577741314755-048d8525d31e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Programming", "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZ3JhbW1pbmd8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"));
-//        categoryRVLargeModels.add(new CategoryRVModel(ID ,"Technology", "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHRlY2hub2xvZ3l8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"));
     }
 
     @Override
